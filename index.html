@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Win for Life Analyst</title>
-  <link rel="preconnect" href="https://api.fontshare.com">
-  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&f[]=boska@400,700&display=swap" rel="stylesheet">
+  //api.fontshare.com">
+  //api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&f[]=boska@400,700&display=swap" rel="stylesheet">
   <style>
     :root, [data-theme="light"] {
       --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
@@ -25,6 +25,8 @@
       --color-primary:#01696f;
       --color-primary-hover:#0c4e54;
       --color-primary-highlight:#cedcd8;
+      --color-score:#7c4dbd;
+      --color-score-highlight:#ede8f7;
       --radius-md:.5rem;
       --radius-lg:.75rem;
       --radius-xl:1rem;
@@ -45,6 +47,8 @@
       --color-primary:#4f98a3;
       --color-primary-hover:#227f8b;
       --color-primary-highlight:#313b3b;
+      --color-score:#a87de8;
+      --color-score-highlight:#2e2640;
     }
     *{box-sizing:border-box}
     body{
@@ -152,6 +156,7 @@
       font-weight:800;
     }
     .ball.special{border:1px solid var(--color-primary)}
+    .ball.score-ball{background:var(--color-score-highlight);border:1px solid var(--color-score)}
     .stack{display:grid;gap:.8rem}
     .section{margin-bottom:1rem}
     .history-head{
@@ -186,6 +191,24 @@
       background:var(--color-primary);
       border-radius:999px;
     }
+    .bar.score-bar>span{
+      background:var(--color-score);
+    }
+    .score-badge{
+      display:inline-block;
+      padding:.15rem .5rem;
+      border-radius:999px;
+      background:var(--color-score-highlight);
+      color:var(--color-score);
+      font-size:var(--text-xs);
+      font-weight:700;
+    }
+    .top5-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:.5rem;
+      margin-top:.75rem;
+    }
     .footnote{margin-top:1rem}
     @media (max-width: 920px){
       .panel,.main{flex-basis:100%;max-width:none}
@@ -199,7 +222,7 @@
     <div>
       <div class="brand-name">Win for Life Analyst</div>
       <div class="muted" style="font-size:var(--text-sm)">
-        Versione CSV · frequenze e ritardi da file caricato
+        Versione CSV · frequenze, ritardi e score
       </div>
     </div>
     <button class="theme-toggle" data-theme-toggle aria-label="Cambia tema"></button>
@@ -208,18 +231,19 @@
   <section class="hero">
     <article class="hero-card" style="flex:1 1 680px">
       <div class="eyebrow">Nessun CORS, solo dati tuoi</div>
-      <h1>Carica le estrazioni e l’app fa il resto.</h1>
+      <h1>Carica le estrazioni e l'app fa il resto.</h1>
       <p class="muted">
-        Invece di leggere l’archivio ufficiale via rete (bloccato da CORS), questa versione usa un file CSV di estrazioni
-        che carichi tu. Poi calcola frequenze e ritardi sui dati del file, rispettando le regole del Classico
-        (10 numeri su 20 più Numerone). [web:4][web:20]
+        Carica un CSV di estrazioni: l'app calcola frequenze, ritardi e lo
+        <strong>score (frequenza × ritardo)</strong> per ogni numero,
+        utile per costruire schedine orientate al "colpo grosso".
       </p>
     </article>
     <aside class="hero-card" style="flex:1 1 260px">
-      <div class="label">Formato CSV</div>
-      <div class="big">data;concorso;n1…n10;numerone</div>
+      <div class="label">Formula Score</div>
+      <div class="big">freq × (1 + ritardo)</div>
       <p class="muted">
-        Ogni riga rappresenta un concorso. Più righe hai, più lo storico è ampio e stabili sono frequenze e ritardi.
+        Combina storico e assenza recente: un numero molto uscito
+        e da tempo assente ha score alto.
       </p>
     </aside>
   </section>
@@ -229,33 +253,33 @@
       <h2 style="margin-bottom:1rem">Controlli</h2>
 
       <div class="form-group">
-        <label for="csvInput">Carica CSV estrazioni</label>
+        abel for="csvInput">Carica CSV estrazioni</label>
         <input type="file" id="csvInput" accept=".csv,text/csv" />
         <small class="muted">
-          Formato tipo:<br>
-          <code>data;concorso;n1;n2;…;n10;numerone</code>
+          Formato:<br>
+          de>data;concorso;n1;…;n10;numerone</code>
         </small>
       </div>
 
       <div class="form-group">
-        <label for="strategy">Strategia demo</label>
+        abel for="strategy">Strategia demo</label>
         <select id="strategy">
           <option value="random">Random puro</option>
           <option value="hot">Hot numbers</option>
           <option value="cold">Cold numbers</option>
           <option value="mixed" selected>Mixed</option>
-          <option value="anti">Anti-popularity</option>
+          <option value="score">Score top</option>
         </select>
       </div>
       <div class="form-group">
-        <label for="ticketCount">Numero schedine demo</label>
+        abel for="ticketCount">Numero schedine demo</label>
         <input id="ticketCount" type="number" min="1" max="20" value="5" />
       </div>
       <div class="actions">
         <button class="btn btn-secondary" id="generateBtn">Genera demo</button>
       </div>
       <p class="status" style="margin-top:1rem">
-        I calcoli di frequenza e ritardo si basano solo sulle righe del CSV che carichi di volta in volta.
+        I calcoli si basano solo sulle righe del CSV caricato.
       </p>
     </aside>
 
@@ -265,37 +289,39 @@
           <div class="card">
             <div class="label">Modello</div>
             <div class="big">Classico 10/20</div>
-            <p class="muted">10 numeri su 20 + Numerone. [web:4]</p>
-          </div>
-          <div class="card">
-            <div class="label">Categorie</div>
-            <div class="big">8</div>
-            <p class="muted">10+1; 10; 9+1; 9; 8+1; 8; 7+1; 7. [web:4]</p>
+            <p class="muted">10 numeri su 20 + Numerone.</p>
           </div>
           <div class="card">
             <div class="label">Storico caricato</div>
             <div class="big" id="drawCount">0</div>
             <p class="muted">Concorsi letti dal CSV.</p>
           </div>
+          <div class="card">
+            <div class="label">Score massimo</div>
+            <div class="big" id="topScoreVal">—</div>
+            <p class="muted">Numero con score più alto: <strong id="topScoreNum">—</strong></p>
+          </div>
         </div>
       </section>
 
-      <section class="section">
-        <div class="label">Schedine demo</div>
-        <div id="ticketList" class="stack"></div>
-      </section>
-
+      <!-- SCORE -->
       <section class="section">
         <div class="history-head">
           <div>
-            <div class="label">Storico dal CSV</div>
-            <h2>Concorsi caricati</h2>
+            <div class="label">Score · freq × (1 + ritardo)</div>
+            <h2>Numeri con score più alto</h2>
           </div>
-          <div class="status" id="historyStatus">Nessun file caricato</div>
+          <div class="status" id="scoreStatus">Nessun dato</div>
         </div>
-        <div id="historyList" class="stack" style="margin-top:1rem"></div>
+        <p class="muted" style="margin:.5rem 0 1rem;font-size:var(--text-sm)">
+          I numeri in cima sono quelli che combinano alta frequenza storica
+          con assenza recente: ottimi candidati per una giocata orientata al colpo grosso.
+        </p>
+        <div class="top5-row" id="scoreTop5"></div>
+        <div id="scoreGrid" class="freq-grid" style="margin-top:1rem"></div>
       </section>
 
+      <!-- FREQUENZE -->
       <section class="section">
         <div class="history-head">
           <div>
@@ -304,253 +330,4 @@
           </div>
           <div class="status" id="freqStatus">Nessun dato</div>
         </div>
-        <div id="freqGrid" class="freq-grid" style="margin-top:1rem"></div>
-      </section>
-
-      <section class="section">
-        <div class="history-head">
-          <div>
-            <div class="label">Ritardi</div>
-            <h2>Da quanti concorsi manca</h2>
-          </div>
-          <div class="status" id="delayStatus">Nessun dato</div>
-        </div>
-        <div id="delayGrid" class="freq-grid" style="margin-top:1rem"></div>
-      </section>
-    </main>
-  </section>
-
-  <section class="footnote">
-    <p>
-      Questa versione non fa più richieste verso siti esterni: tutto avviene sul tuo browser, usando
-      solo i dati del CSV che carichi. Così evitiamo problemi di CORS e manteniamo l’analisi onesta
-      e trasparente sui numeri disponibili. [web:124]
-    </p>
-  </section>
-</div>
-
-<script>
-  const html = document.documentElement;
-  const themeBtn = document.querySelector('[data-theme-toggle]');
-  let theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  function setThemeIcon(){
-    html.setAttribute('data-theme', theme);
-    themeBtn.innerHTML = theme === 'dark'
-      ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
-      : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
-  }
-  setThemeIcon();
-  themeBtn.addEventListener('click',()=>{theme = theme==='dark' ? 'light' : 'dark'; setThemeIcon();});
-
-  const $ = id => document.getElementById(id);
-  const ticketList   = $('ticketList');
-  const historyList  = $('historyList');
-  const historyStatus= $('historyStatus');
-  const freqGrid     = $('freqGrid');
-  const freqStatus   = $('freqStatus');
-  const delayGrid    = $('delayGrid');
-  const delayStatus  = $('delayStatus');
-  const drawCount    = $('drawCount');
-  let loadedDraws    = [];
-
-  function sampleRange(max, count) {
-    const pool = Array.from({length:max}, (_,i)=>i+1);
-    const chosen = [];
-    while (chosen.length < count) {
-      const idx = Math.floor(Math.random() * pool.length);
-      chosen.push(pool.splice(idx,1)[0]);
-    }
-    return chosen.sort((a,b)=>a-b);
-  }
-
-  function antiPopularityPick(max, count) {
-    const chosen = [];
-    while (chosen.length < count) {
-      const n = 1 + Math.floor(Math.random() * max);
-      if (chosen.includes(n)) continue;
-      if (chosen.some(x => Math.abs(x - n) <= 1)) continue;
-      chosen.push(n);
-    }
-    return chosen.sort((a,b)=>a-b);
-  }
-
-  function generateTicket(strategy) {
-    const numbers = strategy === 'anti' ? antiPopularityPick(20, 10) : sampleRange(20, 10);
-    const numerone = 1 + Math.floor(Math.random() * 20);
-    return { numbers, numerone };
-  }
-
-  function renderTickets() {
-    const strategy = $('strategy').value;
-    const count = Math.max(1, Math.min(20, Number($('ticketCount').value || 5)));
-    const tickets = Array.from({length: count}, () => generateTicket(strategy));
-    ticketList.innerHTML = tickets.map((ticket, idx) => `
-      <article class="ticket">
-        <div><strong>Schedina ${idx + 1}</strong> <span class="muted">(demo)</span></div>
-        <div class="numbers">
-          ${ticket.numbers.map(n => `<span class="ball">${n}</span>`).join('')}
-          <span class="ball special">N ${ticket.numerone}</span>
-        </div>
-      </article>
-    `).join('');
-  }
-
-  function renderHistory(draws) {
-    drawCount.textContent = String(draws.length);
-    if (!draws.length) {
-      historyStatus.textContent = 'Nessun concorso nel CSV';
-      historyList.innerHTML = '';
-      return;
-    }
-    historyStatus.textContent = `${draws.length} concorsi dal CSV`;
-    historyList.innerHTML = draws.map(item => `
-      <article class="history-item">
-        <div class="label">${item.drawId}</div>
-        <div><strong>${item.date}</strong></div>
-        <div class="numbers">
-          ${item.numbers.map(n => `<span class="ball">${n}</span>`).join('')}
-          ${item.numerone ? `<span class="ball special">N ${item.numerone}</span>` : ''}
-        </div>
-      </article>
-    `).join('');
-  }
-
-  function computeFrequencies(draws) {
-    const counts = new Map();
-    for (let i = 1; i <= 20; i++) counts.set(i, 0);
-    draws.forEach(draw => draw.numbers.forEach(n => counts.set(n, counts.get(n) + 1)));
-    return Array.from(counts.entries())
-      .map(([number, count]) => ({ number, count }))
-      .sort((a,b) => b.count - a.count || a.number - b.number);
-  }
-
-  function renderFrequencies(freqs, totalDraws) {
-    if (!freqs.length || !totalDraws) {
-      freqStatus.textContent = 'Nessun dato';
-      freqGrid.innerHTML = '';
-      return;
-    }
-    freqStatus.textContent = `Calcolate su ${totalDraws} concorsi dal CSV`;
-    const top = freqs.slice(0, 12);
-    const max = top[0].count || 1;
-    freqGrid.innerHTML = top.map(item => {
-      const pct = ((item.count / totalDraws) * 100).toFixed(1);
-      const width = (item.count / max) * 100;
-      return `
-        <div class="freq-row">
-          <div><span class="ball">${item.number}</span></div>
-          <div class="bar"><span style="width:${width}%"></span></div>
-          <div>${item.count} · ${pct}%</div>
-        </div>
-      `;
-    }).join('');
-  }
-
-  function computeDelays(draws) {
-    const lastSeen = new Map();
-    const delays = [];
-    draws.forEach((draw, idx) => {
-      draw.numbers.forEach(n => {
-        if (n >= 1 && n <= 20) lastSeen.set(n, idx);
-      });
-    });
-    const lastIndex = draws.length - 1;
-    const total = draws.length || 0;
-    for (let n = 1; n <= 20; n++) {
-      let delay;
-      if (lastSeen.has(n)) {
-        delay = lastIndex - lastSeen.get(n);
-      } else {
-        delay = total;
-      }
-      delays.push({ number: n, delay });
-    }
-    delays.sort((a,b) => b.delay - a.delay || a.number - b.number);
-    return delays;
-  }
-
-  function renderDelays(delays, totalDraws) {
-    if (!delays.length || !totalDraws) {
-      delayStatus.textContent = 'Nessun dato';
-      delayGrid.innerHTML = '';
-      return;
-    }
-    delayStatus.textContent = `Calcolati su ${totalDraws} concorsi dal CSV`;
-    const top = delays.slice(0, 12);
-    const max = top[0].delay || 1;
-    delayGrid.innerHTML = top.map(item => {
-      const width = (item.delay / max) * 100;
-      return `
-        <div class="freq-row">
-          <div><span class="ball">${item.number}</span></div>
-          <div class="bar"><span style="width:${width}%"></span></div>
-          <div>${item.delay}</div>
-        </div>
-      `;
-    }).join('');
-  }
-
-  function parseCsv(text) {
-    const lines = text.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0);
-    if (lines.length <= 1) return [];
-    const header = lines[0].split(';').map(h => h.trim().toLowerCase());
-    const idxData = header.indexOf('data');
-    const idxConc = header.indexOf('concorso');
-    const idxNum1 = header.indexOf('n1');
-    const idxNum10 = header.indexOf('n10');
-    const idxNumr = header.indexOf('numerone');
-
-    const draws = [];
-    for (let i = 1; i < lines.length; i++) {
-      const cols = lines[i].split(';').map(c => c.trim());
-      if (!cols.length) continue;
-      const date = idxData >= 0 ? cols[idxData] : '';
-      const drawId = idxConc >= 0 ? cols[idxConc] : `riga ${i+1}`;
-      const nums = [];
-      for (let j = idxNum1; j <= idxNum10 && j >= 0 && j < cols.length; j++) {
-        const v = Number(cols[j]);
-        if (!Number.isNaN(v) && v >= 1 && v <= 20) nums.push(v);
-      }
-      const numerone = idxNumr >= 0 && idxNumr < cols.length ? Number(cols[idxNumr]) : 0;
-      if (nums.length) {
-        draws.push({
-          date,
-          drawId,
-          numbers: [...new Set(nums)].sort((a,b)=>a-b).slice(0,10),
-          numerone: Number.isNaN(numerone) ? 0 : numerone
-        });
-      }
-    }
-    return draws;
-  }
-
-  $('csvInput').addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    historyStatus.textContent = 'Lettura CSV in corso…';
-    freqStatus.textContent = 'Calcolo in corso…';
-    delayStatus.textContent = 'Calcolo in corso…';
-    reader.onload = () => {
-      try {
-        const text = reader.result;
-        const draws = parseCsv(text);
-        loadedDraws = draws;
-        renderHistory(draws);
-        const freqs = computeFrequencies(draws);
-        renderFrequencies(freqs, draws.length || 0);
-        const delays = computeDelays(draws);
-        renderDelays(delays, draws.length || 0);
-      } catch (err) {
-        historyStatus.textContent = 'Errore nel parse del CSV';
-        console.error(err);
-      }
-    };
-    reader.readAsText(file, 'utf-8');
-  });
-
-  $('generateBtn').addEventListener('click', renderTickets);
-  renderTickets();
-</script>
-</body>
-</html>
+        <div id="freqGrid
