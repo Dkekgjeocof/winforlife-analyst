@@ -7,59 +7,33 @@
   //api.fontshare.com">
   //api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&f[]=boska@400,700&display=swap" rel="stylesheet">
   <style>
-    :root, [data-theme="light"] {
-      --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
-      --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
-      --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
-      --text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
-      --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
-      --text-2xl: clamp(2rem, 1.2rem + 2.5vw, 3.5rem);
-      --color-bg:#f7f6f2;
-      --color-surface:#f9f8f5;
-      --color-surface-2:#fbfbf9;
-      --color-surface-offset:#f3f0ec;
-      --color-border:#d4d1ca;
-      --color-divider:#dcd9d5;
-      --color-text:#28251d;
-      --color-text-muted:#7a7974;
-      --color-primary:#01696f;
-      --color-primary-hover:#0c4e54;
-      --color-primary-highlight:#cedcd8;
-      --color-score:#7c4dbd;
-      --color-score-highlight:#ede8f7;
-      --radius-md:.5rem;
-      --radius-lg:.75rem;
-      --radius-xl:1rem;
+    :root,[data-theme="light"]{
+      --text-xs:clamp(.75rem,.7rem + .25vw,.875rem);
+      --text-sm:clamp(.875rem,.8rem + .35vw,1rem);
+      --text-base:clamp(1rem,.95rem + .25vw,1.125rem);
+      --text-lg:clamp(1.125rem,1rem + .75vw,1.5rem);
+      --text-xl:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);
+      --text-2xl:clamp(2rem,1.2rem + 2.5vw,3.5rem);
+      --color-bg:#f7f6f2;--color-surface:#f9f8f5;--color-surface-2:#fbfbf9;
+      --color-surface-offset:#f3f0ec;--color-border:#d4d1ca;--color-divider:#dcd9d5;
+      --color-text:#28251d;--color-text-muted:#7a7974;
+      --color-primary:#01696f;--color-primary-hover:#0c4e54;--color-primary-highlight:#cedcd8;
+      --color-score:#7c4dbd;--color-score-highlight:#ede8f7;
+      --radius-md:.5rem;--radius-lg:.75rem;--radius-xl:1rem;
       --shadow-sm:0 1px 2px rgba(0,0,0,.06);
       --content-wide:1240px;
-      --font-body:'Satoshi', system-ui, sans-serif;
-      --font-display:'Boska', Georgia, serif;
+      --font-body:'Satoshi',system-ui,sans-serif;
+      --font-display:'Boska',Georgia,serif;
     }
-    [data-theme="dark"] {
-      --color-bg:#171614;
-      --color-surface:#1c1b19;
-      --color-surface-2:#201f1d;
-      --color-surface-offset:#22211f;
-      --color-border:#393836;
-      --color-divider:#262523;
-      --color-text:#cdccca;
-      --color-text-muted:#979590;
-      --color-primary:#4f98a3;
-      --color-primary-hover:#227f8b;
-      --color-primary-highlight:#313b3b;
-      --color-score:#a87de8;
-      --color-score-highlight:#2e2640;
+    [data-theme="dark"]{
+      --color-bg:#171614;--color-surface:#1c1b19;--color-surface-2:#201f1d;
+      --color-surface-offset:#22211f;--color-border:#393836;--color-divider:#262523;
+      --color-text:#cdccca;--color-text-muted:#979590;
+      --color-primary:#4f98a3;--color-primary-hover:#227f8b;--color-primary-highlight:#313b3b;
+      --color-score:#a87de8;--color-score-highlight:#2e2640;
     }
     *{box-sizing:border-box}
-    body{
-      margin:0;
-      min-height:100vh;
-      font-family:var(--font-body);
-      font-size:var(--text-base);
-      line-height:1.6;
-      background:var(--color-bg);
-      color:var(--color-text);
-    }
+    body{margin:0;min-height:100vh;font-family:var(--font-body);font-size:var(--text-base);line-height:1.6;background:var(--color-bg);color:var(--color-text)}
     h1,h2,h3,p{margin:0}
     a{color:var(--color-primary)}
     .app{max-width:var(--content-wide);margin:0 auto;padding:1rem}
@@ -68,152 +42,41 @@
     .hero,.layout,.cards{flex-wrap:wrap}
     .panel{flex:0 0 340px;max-width:340px}
     .main{flex:1 1 700px}
-    .hero-card,.panel,.section,.footnote{
-      background:var(--color-surface);
-      border:1px solid var(--color-border);
-      border-radius:var(--radius-xl);
-      box-shadow:var(--shadow-sm);
-      padding:1.15rem;
-    }
+    .hero-card,.panel,.section,.footnote{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);box-shadow:var(--shadow-sm);padding:1.15rem}
     .brand-name{font-family:var(--font-display);font-size:var(--text-lg)}
     .theme-toggle,.btn{min-height:44px;border-radius:999px}
-    .theme-toggle{
-      width:44px;
-      border:1px solid var(--color-border);
-      background:var(--color-surface);
-      cursor:pointer;
-    }
-    .eyebrow{
-      font-size:var(--text-xs);
-      text-transform:uppercase;
-      letter-spacing:.12em;
-      color:var(--color-text-muted);
-      margin-bottom:.5rem;
-    }
-    h1{
-      font-family:var(--font-display);
-      font-size:var(--text-2xl);
-      margin-bottom:.75rem;
-    }
+    .theme-toggle{width:44px;border:1px solid var(--color-border);background:var(--color-surface);cursor:pointer}
+    .eyebrow{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.12em;color:var(--color-text-muted);margin-bottom:.5rem}
+    h1{font-family:var(--font-display);font-size:var(--text-2xl);margin-bottom:.75rem}
     .muted{color:var(--color-text-muted)}
-    .form-group{
-      display:flex;
-      flex-direction:column;
-      gap:.4rem;
-      margin-bottom:1rem;
-    }
+    .form-group{display:flex;flex-direction:column;gap:.4rem;margin-bottom:1rem}
     label{font-size:var(--text-sm);font-weight:700}
-    input,select{
-      width:100%;
-      padding:.85rem 1rem;
-      border:1px solid var(--color-border);
-      border-radius:var(--radius-md);
-      background:var(--color-surface-2);
-      color:var(--color-text);
-    }
-    .btn{
-      padding:.9rem 1.1rem;
-      border:none;
-      cursor:pointer;
-    }
+    input,select{width:100%;padding:.85rem 1rem;border:1px solid var(--color-border);border-radius:var(--radius-md);background:var(--color-surface-2);color:var(--color-text)}
+    .btn{padding:.9rem 1.1rem;border:none;cursor:pointer}
     .btn-primary{background:var(--color-primary);color:#fff}
     .btn-primary:hover{background:var(--color-primary-hover)}
-    .btn-secondary{
-      background:var(--color-surface-offset);
-      border:1px solid var(--color-border);
-    }
-    .card,.history-item,.ticket,.freq-row{
-      padding:1rem;
-      background:var(--color-surface-2);
-      border:1px solid var(--color-divider);
-      border-radius:var(--radius-lg);
-    }
+    .btn-secondary{background:var(--color-surface-offset);border:1px solid var(--color-border)}
+    .card,.history-item,.ticket,.freq-row{padding:1rem;background:var(--color-surface-2);border:1px solid var(--color-divider);border-radius:var(--radius-lg)}
     .cards{margin-bottom:1rem}
     .card{flex:1 1 220px}
-    .label{
-      font-size:var(--text-xs);
-      text-transform:uppercase;
-      letter-spacing:.08em;
-      color:var(--color-text-muted);
-      margin-bottom:.35rem;
-    }
+    .label{font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.08em;color:var(--color-text-muted);margin-bottom:.35rem}
     .big{font-size:var(--text-xl);font-weight:900}
-    .numbers{
-      display:flex;
-      flex-wrap:wrap;
-      gap:.4rem;
-      margin:.75rem 0;
-    }
-    .ball{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      min-width:2.15rem;
-      height:2.15rem;
-      padding:0 .55rem;
-      border-radius:999px;
-      background:var(--color-primary-highlight);
-      font-weight:800;
-    }
+    .numbers{display:flex;flex-wrap:wrap;gap:.4rem;margin:.75rem 0}
+    .ball{display:inline-flex;align-items:center;justify-content:center;min-width:2.15rem;height:2.15rem;padding:0 .55rem;border-radius:999px;background:var(--color-primary-highlight);font-weight:800}
     .ball.special{border:1px solid var(--color-primary)}
     .ball.score-ball{background:var(--color-score-highlight);border:1px solid var(--color-score)}
     .stack{display:grid;gap:.8rem}
     .section{margin-bottom:1rem}
-    .history-head{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:1rem;
-      flex-wrap:wrap;
-    }
+    .history-head{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}
     .status{font-size:var(--text-sm);color:var(--color-text-muted)}
-    .freq-grid{
-      display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:.8rem;
-    }
-    .freq-row{
-      display:grid;
-      grid-template-columns:52px 1fr 72px;
-      gap:.75rem;
-      align-items:center;
-    }
-    .bar{
-      height:12px;
-      background:var(--color-surface-offset);
-      border-radius:999px;
-      overflow:hidden;
-      border:1px solid var(--color-divider);
-    }
-    .bar>span{
-      display:block;
-      height:100%;
-      background:var(--color-primary);
-      border-radius:999px;
-    }
-    .bar.score-bar>span{
-      background:var(--color-score);
-    }
-    .score-badge{
-      display:inline-block;
-      padding:.15rem .5rem;
-      border-radius:999px;
-      background:var(--color-score-highlight);
-      color:var(--color-score);
-      font-size:var(--text-xs);
-      font-weight:700;
-    }
-    .top5-row{
-      display:flex;
-      flex-wrap:wrap;
-      gap:.5rem;
-      margin-top:.75rem;
-    }
+    .freq-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem}
+    .freq-row{display:grid;grid-template-columns:52px 1fr 72px;gap:.75rem;align-items:center}
+    .bar{height:12px;background:var(--color-surface-offset);border-radius:999px;overflow:hidden;border:1px solid var(--color-divider)}
+    .bar>span{display:block;height:100%;background:var(--color-primary);border-radius:999px}
+    .bar.score-bar>span{background:var(--color-score)}
+    .top5-row{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.75rem}
     .footnote{margin-top:1rem}
-    @media (max-width: 920px){
-      .panel,.main{flex-basis:100%;max-width:none}
-      .freq-grid{grid-template-columns:1fr}
-    }
+    @media(max-width:920px){.panel,.main{flex-basis:100%;max-width:none}.freq-grid{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
@@ -221,9 +84,7 @@
   <header class="topbar">
     <div>
       <div class="brand-name">Win for Life Analyst</div>
-      <div class="muted" style="font-size:var(--text-sm)">
-        Versione CSV · frequenze, ritardi e score
-      </div>
+      <div class="muted" style="font-size:var(--text-sm)">Versione CSV · frequenze, ritardi e score</div>
     </div>
     <button class="theme-toggle" data-theme-toggle aria-label="Cambia tema"></button>
   </header>
@@ -232,35 +93,23 @@
     <article class="hero-card" style="flex:1 1 680px">
       <div class="eyebrow">Nessun CORS, solo dati tuoi</div>
       <h1>Carica le estrazioni e l'app fa il resto.</h1>
-      <p class="muted">
-        Carica un CSV di estrazioni: l'app calcola frequenze, ritardi e lo
-        <strong>score (frequenza × ritardo)</strong> per ogni numero,
-        utile per costruire schedine orientate al "colpo grosso".
-      </p>
+      <p class="muted">Carica un CSV di estrazioni: l'app calcola frequenze, ritardi e lo <strong>score (frequenza × ritardo)</strong> per ogni numero, utile per costruire schedine orientate al "colpo grosso".</p>
     </article>
     <aside class="hero-card" style="flex:1 1 260px">
       <div class="label">Formula Score</div>
       <div class="big">freq × (1 + ritardo)</div>
-      <p class="muted">
-        Combina storico e assenza recente: un numero molto uscito
-        e da tempo assente ha score alto.
-      </p>
+      <p class="muted">Combina storico e assenza recente: un numero molto uscito e da tempo assente ha score alto.</p>
     </aside>
   </section>
 
   <section class="layout">
     <aside class="panel">
       <h2 style="margin-bottom:1rem">Controlli</h2>
-
       <div class="form-group">
         abel for="csvInput">Carica CSV estrazioni</label>
         <input type="file" id="csvInput" accept=".csv,text/csv" />
-        <small class="muted">
-          Formato:<br>
-          de>data;concorso;n1;…;n10;numerone</code>
-        </small>
+        <small class="muted">Formato:<br>de>data;concorso;n1;…;n10;numerone</code></small>
       </div>
-
       <div class="form-group">
         abel for="strategy">Strategia demo</label>
         <select id="strategy">
@@ -278,9 +127,7 @@
       <div class="actions">
         <button class="btn btn-secondary" id="generateBtn">Genera demo</button>
       </div>
-      <p class="status" style="margin-top:1rem">
-        I calcoli si basano solo sulle righe del CSV caricato.
-      </p>
+      <p class="status" style="margin-top:1rem">I calcoli si basano solo sulle righe del CSV caricato.</p>
     </aside>
 
     <main class="main">
@@ -304,7 +151,6 @@
         </div>
       </section>
 
-      <!-- SCORE -->
       <section class="section">
         <div class="history-head">
           <div>
@@ -313,15 +159,11 @@
           </div>
           <div class="status" id="scoreStatus">Nessun dato</div>
         </div>
-        <p class="muted" style="margin:.5rem 0 1rem;font-size:var(--text-sm)">
-          I numeri in cima sono quelli che combinano alta frequenza storica
-          con assenza recente: ottimi candidati per una giocata orientata al colpo grosso.
-        </p>
+        <p class="muted" style="margin:.5rem 0 1rem;font-size:var(--text-sm)">I numeri in cima combinano alta frequenza storica con assenza recente: ottimi candidati per una giocata orientata al colpo grosso.</p>
         <div class="top5-row" id="scoreTop5"></div>
         <div id="scoreGrid" class="freq-grid" style="margin-top:1rem"></div>
       </section>
 
-      <!-- FREQUENZE -->
       <section class="section">
         <div class="history-head">
           <div>
@@ -330,4 +172,48 @@
           </div>
           <div class="status" id="freqStatus">Nessun dato</div>
         </div>
-        <div id="freqGrid
+        <div id="freqGrid" class="freq-grid" style="margin-top:1rem"></div>
+      </section>
+
+      <section class="section">
+        <div class="history-head">
+          <div>
+            <div class="label">Ritardi</div>
+            <h2>Da quanti concorsi manca</h2>
+          </div>
+          <div class="status" id="delayStatus">Nessun dato</div>
+        </div>
+        <div id="delayGrid" class="freq-grid" style="margin-top:1rem"></div>
+      </section>
+
+      <section class="section">
+        <div class="history-head">
+          <div>
+            <div class="label">Storico dal CSV</div>
+            <h2>Concorsi caricati</h2>
+          </div>
+          <div class="status" id="historyStatus">Nessun file caricato</div>
+        </div>
+        <div id="historyList" class="stack" style="margin-top:1rem"></div>
+      </section>
+
+      <section class="section">
+        <div class="label">Schedine demo</div>
+        <div id="ticketList" class="stack"></div>
+      </section>
+    </main>
+  </section>
+
+  <section class="footnote">
+    <p>Tutto avviene sul tuo browser usando solo i dati del CSV che carichi. Nessuna richiesta verso siti esterni, nessun problema di CORS.</p>
+  </section>
+</div>
+
+<script>
+  const html=document.documentElement;
+  const themeBtn=document.querySelector('[data-theme-toggle]');
+  let theme=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+  function setThemeIcon(){
+    html.setAttribute('data-theme',theme);
+    themeBtn.innerHTML=theme==='dark'
+      ?'<svg width="20"
