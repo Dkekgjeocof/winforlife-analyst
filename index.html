@@ -93,11 +93,11 @@
     <article class="hero-card" style="flex:1 1 680px">
       <div class="eyebrow">Nessun CORS, solo dati tuoi</div>
       <h1>Carica le estrazioni e l'app fa il resto.</h1>
-      <p class="muted">Carica un CSV di estrazioni: l'app calcola frequenze, ritardi e lo <strong>score (frequenza × ritardo)</strong> per ogni numero, utile per costruire schedine orientate al "colpo grosso".</p>
+      <p class="muted">Carica un CSV di estrazioni: l'app calcola frequenze, ritardi e lo <strong>score (frequenza x ritardo)</strong> per ogni numero, utile per costruire schedine orientate al colpo grosso.</p>
     </article>
     <aside class="hero-card" style="flex:1 1 260px">
       <div class="label">Formula Score</div>
-      <div class="big">freq × (1 + ritardo)</div>
+      <div class="big">freq x (1 + ritardo)</div>
       <p class="muted">Combina storico e assenza recente: un numero molto uscito e da tempo assente ha score alto.</p>
     </aside>
   </section>
@@ -108,7 +108,7 @@
       <div class="form-group">
         abel for="csvInput">Carica CSV estrazioni</label>
         <input type="file" id="csvInput" accept=".csv,text/csv" />
-        <small class="muted">Formato:<br>de>data;concorso;n1;…;n10;numerone</code></small>
+        <small class="muted">Formato:<br>de>data;concorso;n1;...;n10;numerone</code></small>
       </div>
       <div class="form-group">
         abel for="strategy">Strategia demo</label>
@@ -145,8 +145,8 @@
           </div>
           <div class="card">
             <div class="label">Score massimo</div>
-            <div class="big" id="topScoreVal">—</div>
-            <p class="muted">Numero con score più alto: <strong id="topScoreNum">—</strong></p>
+            <div class="big" id="topScoreVal">--</div>
+            <p class="muted">Numero con score piu alto: <strong id="topScoreNum">--</strong></p>
           </div>
         </div>
       </section>
@@ -154,8 +154,8 @@
       <section class="section">
         <div class="history-head">
           <div>
-            <div class="label">Score · freq × (1 + ritardo)</div>
-            <h2>Numeri con score più alto</h2>
+            <div class="label">Score - freq x (1 + ritardo)</div>
+            <h2>Numeri con score piu alto</h2>
           </div>
           <div class="status" id="scoreStatus">Nessun dato</div>
         </div>
@@ -168,7 +168,7 @@
         <div class="history-head">
           <div>
             <div class="label">Frequenze</div>
-            <h2>Numeri più ricorrenti</h2>
+            <h2>Numeri piu ricorrenti</h2>
           </div>
           <div class="status" id="freqStatus">Nessun dato</div>
         </div>
@@ -210,10 +210,12 @@
 </div>
 
 <script>
-  const html=document.documentElement;
-  const themeBtn=document.querySelector('[data-theme-toggle]');
-  let theme=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
-  function setThemeIcon(){
-    html.setAttribute('data-theme',theme);
-    themeBtn.innerHTML=theme==='dark'
-      ?'<svg width="20"
+  const html = document.documentElement;
+  const themeBtn = document.querySelector('[data-theme-toggle]');
+  let theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  function setThemeIcon() {
+    html.setAttribute('data-theme', theme);
+    themeBtn.textContent = theme === 'dark' ? '☀' : '☾';
+  }
+  setThemeIcon();
+  themeBtn.addEventListener('click', () => { theme = theme === 'dark' ? 'light' : 'dark'; setThemeIcon();
